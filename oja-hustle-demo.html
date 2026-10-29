@@ -1,0 +1,1091 @@
+<title>Oja Hustle</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800&display=swap">
+<style>
+  /* Layout: one phone-sized game column, centred on wider screens; bright market world, single committed look */
+  :root {
+    --orange: #FF7A1A;
+    --action: #D9530A;
+    --action-deep: #A33E06;
+    --green: #12A150;
+    --green-ink: #0E7E3E;
+    --yellow: #FFC629;
+    --teal: #00B3A6;
+    --teal-ink: #00857B;
+    --purple: #7B3FE4;
+    --purple-deep: #6230C4;
+    --pink: #FF4F8B;
+    --red: #E5383B;
+    --red-ink: #B42318;
+    --cream: #FFF7E8;
+    --sand: #FFE9C7;
+    --line: #EBD9B8;
+    --ink: #2B1D14;
+    --muted: #6B5444;
+    --white: #FFFFFF;
+    --wood: #8A5A34;
+    --wood-dark: #6B4224;
+    --ground: #FFD27A;
+    --display: 'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+    --body: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+    color-scheme: light;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  body {
+    background: var(--purple);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid var(--yellow);
+    outline-offset: 2px;
+  }
+
+  .shell {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-left: max(0px, env(safe-area-inset-left, 0px));
+    padding-right: max(0px, env(safe-area-inset-right, 0px));
+  }
+
+  .app {
+    width: 100%;
+    max-width: 440px;
+    height: 100%;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 520px) {
+    .shell {
+      padding-block: 16px;
+    }
+
+    .app {
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(40, 10, 90, 0.35);
+    }
+  }
+
+  .scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px max(16px, env(safe-area-inset-left, 0px)) 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--display);
+    margin: 0;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 2px 0 var(--line);
+  }
+
+  .btn {
+    border: none;
+    border-radius: 999px;
+    min-height: 54px;
+    padding: 0 22px;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform .08s;
+  }
+
+  .btn:active {
+    transform: translateY(2px);
+  }
+
+  .btn-primary {
+    background: var(--action);
+    color: var(--white);
+    box-shadow: 0 4px 0 var(--action-deep);
+  }
+
+  .btn-green {
+    background: var(--green-ink);
+    color: var(--white);
+    box-shadow: 0 4px 0 #095C2D;
+  }
+
+  .btn-ghost {
+    background: var(--white);
+    border: 2px solid var(--line);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    min-height: 46px;
+  }
+
+  .btn-block {
+    width: 100%;
+  }
+
+  .btn[disabled] {
+    opacity: .45;
+    cursor: not-allowed;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .between {
+    justify-content: space-between;
+  }
+
+  .label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stepper button {
+    width: 40px;
+    height: 44px;
+    border-radius: 12px;
+    border: 2px solid var(--line);
+    background: var(--white);
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .stepper button.plus {
+    background: var(--action);
+    border-color: var(--action);
+    color: var(--white);
+  }
+
+  .stepper span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: 800;
+    font-size: 17px;
+  }
+
+  /* top bar */
+  .topbar {
+    background: var(--orange);
+    padding: 14px max(16px, env(safe-area-inset-left, 0px)) 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .stat {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 6px 10px;
+  }
+
+  .stat b {
+    display: block;
+    font-size: 17px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* market */
+  .mkt-top {
+    background: var(--purple);
+    color: var(--white);
+    padding: 12px max(16px, env(safe-area-inset-left, 0px));
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .timebar {
+    flex: 1;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--purple-deep);
+    overflow: hidden;
+  }
+
+  .timebar i {
+    display: block;
+    height: 100%;
+    background: var(--yellow);
+    width: 100%;
+  }
+
+  .pill {
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 4px 10px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scene {
+    flex: 1;
+    position: relative;
+    background: var(--sand);
+    overflow: hidden;
+  }
+
+  .scene svg.bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .queue {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    padding: 0 10px;
+  }
+
+  .cust {
+    border: none;
+    background: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: walkin .35s ease-out;
+  }
+
+  @keyframes walkin {
+    from {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  .bubble {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 6px 8px;
+    font-weight: 800;
+    font-size: 13px;
+    line-height: 1.15;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+    text-align: center;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .pat {
+    width: 70%;
+    height: 6px;
+    background: rgba(0, 0, 0, .12);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .pat i {
+    display: block;
+    height: 100%;
+    background: var(--green);
+  }
+
+  .float {
+    position: absolute;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: 20px;
+    pointer-events: none;
+    animation: floatup 1.1s ease-out forwards;
+  }
+
+  @keyframes floatup {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    to {
+      transform: translateY(-60px);
+      opacity: 0;
+    }
+  }
+
+  .toast {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 12px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 8px 12px;
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .12);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .mkt-bottom {
+    background: var(--white);
+    border-top: 1px solid var(--line);
+    padding: 10px max(14px, env(safe-area-inset-left, 0px)) 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .shelf {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .slot {
+    border-radius: 12px;
+    border: 2px solid var(--line);
+    background: var(--cream);
+    padding: 6px 2px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+  }
+
+  .slot b {
+    display: block;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .slot.out {
+    border-style: dashed;
+    background: var(--white);
+  }
+
+  /* overlays */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(43, 20, 90, .55);
+    display: flex;
+    align-items: flex-end;
+    z-index: 20;
+  }
+
+  .sheet {
+    background: var(--cream);
+    width: 100%;
+    border-radius: 28px 28px 0 0;
+    padding: 22px max(18px, env(safe-area-inset-left, 0px)) calc(22px + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: sheetin .25s ease-out;
+    max-height: 92%;
+    overflow-y: auto;
+  }
+
+  @keyframes sheetin {
+    from {
+      transform: translateY(40px);
+      opacity: 0;
+    }
+
+    to {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--action);
+    height: 32px;
+  }
+
+  .choice {
+    width: 100%;
+    text-align: left;
+    min-height: 54px;
+    border-radius: 16px;
+    border: 2px solid var(--line);
+    background: var(--white);
+    padding: 10px 14px;
+    font-weight: 800;
+    font-size: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .choice .k {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .choice.right {
+    border-color: var(--green);
+    background: #E6F6EC;
+  }
+
+  .choice.wrong {
+    border-color: var(--red);
+    background: #FDEBEC;
+  }
+
+  table.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+
+  table.ledger td {
+    padding: 11px 4px;
+    border-bottom: 1px solid #F3E3C7;
+  }
+
+  table.ledger td:last-child {
+    text-align: right;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mama {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .mama .say {
+    background: var(--white);
+    border-radius: 4px 16px 16px 16px;
+    padding: 10px 12px;
+    box-shadow: 0 2px 0 var(--line);
+    font-size: 14px;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mama .say b {
+    color: var(--green-ink);
+    font-size: 12px;
+    display: block;
+  }
+
+  .prog {
+    height: 14px;
+    border-radius: 7px;
+    background: #F3E3C7;
+    overflow: hidden;
+  }
+
+  .prog i {
+    display: block;
+    height: 100%;
+    background: var(--green);
+    border-radius: 7px;
+    transition: width .4s;
+  }
+
+  .split {
+    display: flex;
+    height: 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    gap: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
+
+<div class="shell">
+  <div class="app" id="app" aria-live="polite"></div>
+</div>
+
+<script>
+  (function () {
+    "use strict";
+    const app = document.getElementById("app");
+    const NGN = n => (n < 0 ? "−₦" : "₦") + Math.abs(Math.round(n)).toLocaleString("en-NG");
+    const r50 = n => Math.round(n / 50) * 50;
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+    const PRODUCTS = [
+      { id: "water", name: "Pure water", unit: "bag", cost: 250, sug: 350, life: 0, weight: 3, maxQty: 3, color: "#3B8FC4", bg: "#DCEEF8" },
+      { id: "drink", name: "Soft drink", unit: "bottle", cost: 300, sug: 400, life: 0, weight: 2.5, maxQty: 2, color: "#E5383B", bg: "#FDE2E3" },
+      { id: "bread", name: "Bread", unit: "loaf", cost: 900, sug: 1200, life: 2, weight: 2, maxQty: 2, color: "#C98A44", bg: "#FBE7C6" },
+      { id: "sugar", name: "Sugar", unit: "pack", cost: 1100, sug: 1400, life: 0, weight: 1.1, maxQty: 1, color: "#7B3FE4", bg: "#ECE2FF" },
+      { id: "eggs", name: "Eggs", unit: "crate", cost: 4000, sug: 5000, life: 3, weight: 0.55, maxQty: 1, color: "#E0A030", bg: "#FFF1D6" },
+    ];
+    const P = Object.fromEntries(PRODUCTS.map(p => [p.id, p]));
+    const DAY_SECONDS = 60, LEVY = 300, START_DEBT = 50000, DEADLINE = 30;
+    const NAMES = ["Mrs. Bisi", "Uncle Tunde", "Aisha", "Chinedu", "Mama Ngozi", "Emeka", "Halima", "Kunle", "Blessing", "Musa"];
+    const SHIRTS = ["#7B3FE4", "#00B3A6", "#E5383B", "#FF4F8B", "#12A150", "#3B8FC4"];
+    const SKINS = ["#8A5A34", "#5A3A22", "#9C6A40", "#6B4224", "#B57A4A"];
+
+    const QUIZ = [
+      { q: "You bought 10 bags of pure water at ₦250 and sold all at ₦350. What is your profit?", a: ["₦3,500", "₦1,000", "₦2,500", "₦100"], c: 1, why: "Profit per bag is ₦350 − ₦250 = ₦100. Ten bags gives ₦1,000. ₦3,500 is sales, not profit." },
+      { q: "Bread spoils in 2 days. What is the smartest way to stock it?", a: ["Buy a lot to get it cheaper", "Buy only what you expect to sell", "Never sell bread", "Raise the price every day"], c: 1, why: "Unsold perishables become waste. Buying what you can sell protects your profit." },
+      { q: "A loan of ₦20,000 must be paid back as ₦26,000 next week. What is the interest?", a: ["6%", "13%", "30%", "26%"], c: 2, why: "₦6,000 extra on ₦20,000 is 30% in one week. That is a very expensive loan." },
+      { q: "Customers keep walking away saying 'Too cost!'. What should you try first?", a: ["Lower your price closer to the market price", "Buy more stock", "Close the stall", "Raise the price"], c: 0, why: "When the price is above what buyers will pay, demand drops. Bring it nearer the suggested price." },
+      { q: "You save ₦10,000 and earn 2% a week. How much do you have after one week?", a: ["₦10,020", "₦10,200", "₦12,000", "₦10,002"], c: 1, why: "2% of ₦10,000 is ₦200, so you have ₦10,200." },
+      { q: "A message says: 'Send ₦5,000 now and get ₦50,000 tomorrow!' This is most likely…", a: ["A great investment", "A bank offer", "A scam", "A government grant"], c: 2, why: "Promises of huge, fast returns for a small payment are a classic scam." },
+      { q: "In a haggle, what is the lowest price you should ever accept?", a: ["Anything the customer says", "Your cost price or above", "Half the suggested price", "₦0"], c: 1, why: "Selling below cost price means you lose money on the sale." },
+      { q: "Why keep business money separate from personal money?", a: ["So you know if the business is really making profit", "It is not important", "To pay more tax", "To confuse customers"], c: 0, why: "Mixing them hides whether the stall is earning or losing." },
+      { q: "Sugar's cost went up 20% today. A wise trader…", a: ["Ignores it and keeps the old price", "Raises the price a little and buys less", "Stops selling forever", "Borrows from Femi"], c: 1, why: "When costs rise, adjust your price and quantity so you don't sell at a loss." },
+    ];
+
+    // ---------- state ----------
+    const fresh = () => ({
+      v: 1, screen: "title", name: "Tobi", look: 0, day: 1,
+      cash: 12000, debt: START_DEBT, savings: 0, rep: 3, wisdom: 0,
+      inv: { water: [], drink: [], bread: [], sugar: [], eggs: [] },
+      prices: Object.fromEntries(PRODUCTS.map(p => [p.id, p.sug])),
+      loan: null, femiSeen: false, quizIdx: 0, event: null, lastDay: null,
+      stats: { sales: 0, served: 0, haggles: 0, spoiled: 0, best: 0 },
+    });
+    let S = fresh();
+    try { const raw = localStorage.getItem("oja-hustle-save"); if (raw) { const d = JSON.parse(raw); if (d && d.v === 1) S = Object.assign(fresh(), d); } } catch (e) { }
+    if (S.screen === "market" || S.screen === "haggle") S.screen = "home";
+    const save = () => { try { localStorage.setItem("oja-hustle-save", JSON.stringify(S)); } catch (e) { } };
+
+    const stock = id => S.inv[id].reduce((t, b) => t + b.qty, 0);
+    const takeStock = (id, q) => { let need = q; const arr = S.inv[id]; arr.sort((a, b) => b.age - a.age); for (const b of arr) { const t = Math.min(b.qty, need); b.qty -= t; need -= t; if (!need) break; } S.inv[id] = arr.filter(b => b.qty > 0); };
+    const costToday = id => S.event && S.event.type === "hike" && S.event.item === id ? r50(P[id].cost * 1.2) : P[id].cost;
+
+    function mamaTip() {
+      if (S.loan) return "Fast Money Femi will come for " + NGN(S.loan.owe) + " on Day " + S.loan.due + ". Keep cash ready.";
+      if (S.day === 1) return "Buy small first, my child. Sell what people need every day: water and drinks.";
+      if (S.lastDay && S.lastDay.spoiled > 0) return "Yesterday " + NGN(S.lastDay.spoiled) + " of goods spoiled. Buy only what you can sell.";
+      if (S.lastDay && S.lastDay.lost > 2) return "Many customers walked away. Check your prices against the market price.";
+      if (S.savings === 0 && S.day > 2) return "Small small, the savings jar grows. Even ₦1,000 a day helps.";
+      return pick(["Know your cost price. Never sell below it.", "Happy customers come back. Fair prices build your stars.", "Profit is what is left after you pay for stock."]);
+    }
+
+    const avatar = (skin, shirt, size, hat) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 56 56"><circle cx="28" cy="28" r="28" fill="${hat ? "#FFC629" : "rgba(255,255,255,.0)"}"/><circle cx="28" cy="23" r="12" fill="${skin}"/>${hat ? '<path d="M16 21Q28 5 40 21" fill="#2B1D14"/>' : ""}<path d="M9 54Q28 32 47 54" fill="${shirt}"/></svg>`;
+    const mamaFace = `<svg aria-hidden="true" width="46" height="46" viewBox="0 0 56 56" style="flex-shrink:0"><circle cx="28" cy="28" r="28" fill="#12A150"/><circle cx="28" cy="26" r="12" fill="#6B4224"/><path d="M12 22Q28 2 44 22L42 12Q28 0 14 12Z" fill="#7B3FE4"/><circle cx="23" cy="26" r="4" fill="none" stroke="#FFF7E8" stroke-width="1.5"/><circle cx="33" cy="26" r="4" fill="none" stroke="#FFF7E8" stroke-width="1.5"/></svg>`;
+    const prodIcon = (p, s) => `<span aria-hidden="true" style="width:${s}px;height:${s}px;border-radius:${s / 4}px;background:${p.bg};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="${s * .6}" height="${s * .6}" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="4" fill="${p.color}"/><rect x="7" y="2" width="10" height="5" rx="2" fill="${p.color}" opacity=".6"/></svg></span>`;
+
+    // ---------- screens ----------
+    const R = {};
+
+    R.title = () => `
+    <div class="scroll" style="align-items:center;text-align:center;padding-top:28px">
+      <svg aria-hidden="true" viewBox="0 0 390 60" style="position:absolute;top:0;left:0;width:100%;height:60px" preserveAspectRatio="none"><path d="M0 0H390V34Q370 56 345 34T300 34T255 34T210 34T165 34T120 34T75 34T30 34T0 34Z" fill="#FF7A1A"/></svg>
+      <div style="margin-top:28px"><h1 style="font-size:52px;color:var(--action)">Oja Hustle</h1><p style="font-weight:800;color:var(--green-ink)">Learn money. Run the market.</p></div>
+      <svg role="img" aria-label="A market stall under a striped umbrella" width="210" height="150" viewBox="0 0 220 160"><path d="M20 70Q110 -10 200 70Z" fill="#FF7A1A"/><path d="M65 70Q110 4 110 70ZM155 70Q110 4 110 70Z" fill="#FFC629"/><rect x="107" y="62" width="6" height="40" fill="#2B1D14"/><rect x="30" y="100" width="160" height="56" rx="8" fill="#8A5A34"/><rect x="44" y="82" width="22" height="18" rx="3" fill="#12A150"/><rect x="72" y="76" width="18" height="24" rx="3" fill="#E5383B"/><circle cx="112" cy="92" r="9" fill="#FFC629"/><rect x="128" y="80" width="20" height="20" rx="3" fill="#00B3A6"/><rect x="154" y="84" width="22" height="16" rx="3" fill="#7B3FE4"/><text x="110" y="134" text-anchor="middle" font-family="Nunito,sans-serif" font-weight="800" font-size="12" fill="#FFF7E8">MAMA RONKE'S</text></svg>
+      <div class="card" style="width:100%;text-align:left;display:flex;flex-direction:column;gap:12px">
+        <h2 style="font-size:20px">Choose your Tobi</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          ${[0, 1].map(i => `<button type="button" data-act="look" data-v="${i}" aria-pressed="${S.look === i}" style="border:3px solid ${S.look === i ? "var(--action)" : "var(--line)"};background:${S.look === i ? "#FFE7D2" : "var(--white)"};border-radius:16px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:4px;font-weight:800">${avatar("#6B4224", i ? "#E5383B" : "#12A150", 54, true)}Tobi (${i ? "girl" : "boy"})</button>`).join("")}
+        </div>
+        <label for="pname" class="label">Your name</label>
+        <input id="pname" maxlength="14" value="${S.name.replace(/"/g, "")}" style="height:48px;border-radius:12px;border:2px solid var(--line);padding:0 14px;font:inherit;font-size:16px;margin-top:-6px;background:var(--cream);color:var(--ink)">
+      </div>
+      <button class="btn btn-primary btn-block" data-act="start">${S.lastDay ? "Continue Day " + S.day : "Open the stall"}</button>
+      ${S.lastDay ? `<button class="btn btn-ghost btn-block" data-act="newgame">Start a new game</button>` : ""}
+      <p class="label">Chapter 1 demo · progress saves on this device</p>
+    </div>`;
+
+    R.home = () => {
+      const paid = START_DEBT - S.debt, pct = Math.min(100, paid / START_DEBT * 100);
+      const left = DEADLINE - S.day + 1;
+      const ev = S.event;
+      return `
+    <div class="topbar">
+      <div class="row between"><div class="row">${avatar("#6B4224", S.look ? "#E5383B" : "#12A150", 42, true)}<div><p style="font-size:13px;font-weight:700">Chapter 1 · Day ${S.day}</p><h1 style="font-size:22px">${esc(S.name)}'s Stall</h1></div></div>
+      <button class="btn btn-ghost" style="min-height:40px;padding:0 12px;font-size:13px" data-act="menu">Menu</button></div>
+      <div class="stats"><div class="stat"><span class="label">Cash</span><b>${NGN(S.cash)}</b></div><div class="stat"><span class="label">Savings</span><b style="color:var(--teal-ink)">${NGN(S.savings)}</b></div><div class="stat"><span class="label">Reputation</span><b style="color:var(--action-deep)">${stars(S.rep)}</b></div></div>
+    </div>
+    <div class="scroll">
+      <div class="card" style="display:flex;flex-direction:column;gap:8px">
+        <div class="row between"><h2 style="font-size:19px">The Old Ledger</h2><span class="label">${left > 0 ? left + " days left" : "Overdue"}</span></div>
+        <p style="font-size:14px">Pay off Mama's debt to Alhaji Musa.</p>
+        <div class="prog" role="img" aria-label="${NGN(paid)} of ${NGN(START_DEBT)} paid"><i style="width:${pct}%"></i></div>
+        <p style="font-size:13px;font-weight:700"><span style="color:var(--green-ink)">${NGN(paid)}</span> of ${NGN(START_DEBT)} paid</p>
+      </div>
+      ${ev ? `<div class="card" style="border:2px solid ${ev.color};display:flex;gap:10px;align-items:center"><span class="tag" style="background:${ev.color};color:#fff">TODAY</span><p style="font-size:14px;font-weight:700">${ev.text}</p></div>` : ""}
+      <div class="mama">${mamaFace}<div class="say"><b>Mama Ronke</b>${mamaTip()}</div></div>
+      <div class="card"><div class="row between"><span class="label">In stock</span><span class="label">Wisdom ${S.wisdom}</span></div>
+        <div class="shelf" style="margin-top:8px">${PRODUCTS.map(p => `<div class="slot ${stock(p.id) ? "" : "out"}">${p.name.split(" ").pop()}<b>${stock(p.id)}</b></div>`).join("")}</div></div>
+      ${S.loan ? `<div class="card" style="border:2px solid var(--red)"><p style="font-size:14px"><b style="color:var(--red-ink)">Owed to Fast Money Femi:</b> ${NGN(S.loan.owe)} on Day ${S.loan.due}</p></div>` : ""}
+      <button class="btn btn-primary btn-block" style="margin-top:auto" data-act="tobuy">▶ Start Market Day ${S.day}</button>
+    </div>`;
+    };
+
+    let cart = {};
+    R.buy = () => {
+      const total = PRODUCTS.reduce((t, p) => t + (cart[p.id] || 0) * costToday(p.id), 0);
+      return `
+    <div class="topbar" style="background:var(--white);border-bottom:1px solid var(--line)">
+      <div class="row between"><div><p class="label">Morning · Alhaji Musa's Warehouse</p><h1 style="font-size:24px">Buy Stock</h1></div><div style="text-align:right"><p class="label">Cash</p><b class="num" style="font-size:18px">${NGN(S.cash)}</b></div></div>
+    </div>
+    <div class="scroll">
+      ${PRODUCTS.map(p => {
+        const c = costToday(p.id), hiked = c !== p.cost; return `
+        <div class="card row">
+          ${prodIcon(p, 52)}
+          <div style="flex:1;min-width:0"><h3 style="font-size:16px;font-family:var(--body);font-weight:800">${p.name} <span class="label">(${p.unit})</span></h3>
+            <p style="font-size:13px;color:var(--muted)" class="num">Cost <b style="color:${hiked ? "var(--red-ink)" : "inherit"}">${NGN(c)}</b> · Sells ~${NGN(p.sug)}</p>
+            <p style="font-size:12px;font-weight:800;color:${p.life ? "var(--red-ink)" : "var(--green-ink)"}">${p.life ? "Spoils in " + p.life + " days" : "Never spoils"} · have ${stock(p.id)}</p></div>
+          <div class="stepper"><button aria-label="One less ${p.name}" data-act="cart" data-id="${p.id}" data-v="-1">−</button><span class="num">${cart[p.id] || 0}</span><button class="plus" aria-label="One more ${p.name}" data-act="cart" data-id="${p.id}" data-v="1">+</button></div>
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="mkt-bottom">
+      <div class="row between"><span class="label" style="font-size:14px">Cart total</span><b class="num">${NGN(total)}</b></div>
+      <div class="row between"><span class="label" style="font-size:14px">Cash left</span><b class="num" style="color:${S.cash - total < 0 ? "var(--red-ink)" : "var(--green-ink)"}">${NGN(S.cash - total)}</b></div>
+      <div class="row"><button class="btn btn-ghost" data-act="home">Back</button><button class="btn btn-primary" style="flex:1" data-act="buydone" ${S.cash - total < 0 ? "disabled" : ""}>Set prices</button></div>
+    </div>`;
+    };
+
+    R.price = () => `
+    <div class="topbar" style="background:var(--white);border-bottom:1px solid var(--line)"><p class="label">Before the market opens</p><h1 style="font-size:24px">Set Your Prices</h1></div>
+    <div class="scroll">
+      <p style="font-size:14px;color:var(--muted)">Higher prices mean more profit per sale, but more customers will haggle or walk away.</p>
+      ${PRODUCTS.filter(p => stock(p.id) > 0).map(p => {
+      const c = costToday(p.id), pr = S.prices[p.id], m = pr - c; return `
+        <div class="card" style="display:flex;flex-direction:column;gap:6px">
+          <div class="row between"><div class="row">${prodIcon(p, 36)}<b>${p.name}</b></div><b class="num" style="font-family:var(--display);font-size:22px;color:var(--action)">${NGN(pr)}</b></div>
+          <label class="label" for="pr-${p.id}">Price for one ${p.unit}</label>
+          <input id="pr-${p.id}" type="range" min="${r50(c * 0.8)}" max="${r50(p.sug * 1.6)}" step="50" value="${pr}" data-act="price" data-id="${p.id}">
+          <p class="num" style="font-size:13px;font-weight:700">Cost ${NGN(c)} · <span style="color:${m > 0 ? "var(--green-ink)" : "var(--red-ink)"}">${m >= 0 ? "Profit" : "Loss"} ${NGN(Math.abs(m))} each</span> · Market price ~${NGN(p.sug)}</p>
+        </div>`;
+    }).join("") || `<div class="card"><p>You have no stock. Go back and buy something to sell.</p></div>`}
+    </div>
+    <div class="mkt-bottom"><div class="row"><button class="btn btn-ghost" data-act="buymore">Buy more</button><button class="btn btn-primary" style="flex:1" data-act="open">Open the market</button></div></div>`;
+
+    // ---------- market loop ----------
+    let M = null, timer = null;
+    R.market = () => `
+    <div class="mkt-top"><div><p style="font-size:11px;font-weight:700">Day ${S.day}</p><b id="clock" class="num" style="font-family:var(--display);font-size:22px;line-height:1">8:00</b></div>
+      <div class="timebar"><i id="tbar"></i></div><span class="pill" id="mcash">${NGN(S.cash)}</span>
+      <button class="btn" aria-label="Pause" data-act="pause" style="min-height:42px;width:42px;padding:0;background:var(--purple-deep);color:#fff;font-size:16px">II</button></div>
+    <div class="scene" id="scene">
+      <svg class="bg" viewBox="0 0 390 520" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <rect width="390" height="520" fill="#FFE9C7"/><path d="M-20 60Q40 0 100 60Z" fill="#00B3A6" opacity=".6"/><path d="M290 50Q350 -10 410 50Z" fill="#FF4F8B" opacity=".6"/>
+        <rect x="0" y="330" width="390" height="190" fill="#FFD27A"/>
+        <path d="M40 120Q195 10 350 120Z" fill="#FF7A1A"/><path d="M118 120Q195 24 195 120ZM272 120Q195 24 195 120Z" fill="#FFC629"/><rect x="191" y="110" width="8" height="60" fill="#2B1D14"/>
+        <rect x="40" y="170" width="310" height="30" rx="6" fill="#8A5A34"/><rect x="40" y="226" width="310" height="30" rx="6" fill="#8A5A34"/><rect x="40" y="256" width="310" height="76" rx="8" fill="#6B4224"/>
+        <circle cx="195" cy="280" r="17" fill="#D9A06A"/><path d="M178 275q17-21 34 0z" fill="#FF7A1A"/><path d="M171 332q24-34 48 0" fill="#12A150"/>
+      </svg>
+      <div id="goods"></div>
+      <div class="toast" id="toast" hidden></div>
+      <div class="queue" id="queue"></div>
+    </div>
+    <div class="mkt-bottom">
+      <div class="row between"><span class="label">Tap a customer to serve them</span><b class="num" style="font-family:var(--display);font-size:20px;color:var(--green-ink)" id="msales">+₦0</b></div>
+      <div class="shelf" id="mshelf"></div>
+    </div>`;
+
+    function startMarket() {
+      const mult = S.event && S.event.type === "rain" ? 0.6 : S.event && S.event.type === "rush" ? 1.5 : 1;
+      M = { t: 0, sales: 0, queue: [], nextSpawn: 0.6, mult, served: 0, lost: 0, paused: false, haggle: null, nid: 1 };
+      renderShelf(); renderGoods(); renderQueue();
+      let last = performance.now();
+      clearInterval(timer);
+      timer = setInterval(() => { const now = performance.now(), dt = Math.min(0.25, (now - last) / 1000); last = now; tick(dt); }, 100);
+    }
+    function tick(dt) {
+      if (!M || M.paused || M.haggle) return;
+      M.t += dt;
+      const frac = Math.min(1, M.t / DAY_SECONDS);
+      const tb = document.getElementById("tbar"); if (tb) tb.style.width = (100 - frac * 100) + "%";
+      const mins = 8 * 60 + Math.floor(frac * 10 * 60);
+      const ck = document.getElementById("clock"); if (ck) ck.textContent = Math.floor(mins / 60) + ":" + String(mins % 60).padStart(2, "0");
+      M.nextSpawn -= dt;
+      if (M.nextSpawn <= 0 && M.t < DAY_SECONDS - 3) {
+        if (M.queue.length < 4) spawn();
+        const base = 2.8 - (S.rep - 3) * 0.3;
+        M.nextSpawn = rnd(base * 0.6, base * 1.3) / M.mult;
+      }
+      let changed = false;
+      for (const c of M.queue) {
+        c.pat -= dt;
+        const bar = document.getElementById("pat-" + c.id);
+        if (bar) { bar.style.width = Math.max(0, c.pat / c.patMax * 100) + "%"; bar.style.background = c.pat / c.patMax < 0.35 ? "var(--red)" : "var(--green)"; }
+        if (c.pat <= 0) { c.gone = true; changed = true; M.lost++; S.rep = Math.max(1, S.rep - 0.08); floatText("Left", "var(--red-ink)", c.id); }
+      }
+      if (changed) { M.queue = M.queue.filter(c => !c.gone); renderQueue(); }
+      if (M.t >= DAY_SECONDS) endDay();
+    }
+    function spawn() {
+      const tot = PRODUCTS.reduce((t, p) => t + p.weight, 0);
+      let r = Math.random() * tot, p = PRODUCTS[0];
+      for (const x of PRODUCTS) { r -= x.weight; if (r <= 0) { p = x; break; } }
+      const qty = 1 + Math.floor(Math.random() * p.maxQty);
+      const repF = 0.9 + (S.rep - 1) * 0.06;
+      const max = r50(p.sug * rnd(0.95, 1.22) * repF);
+      const pat = rnd(7, 10);
+      M.queue.push({ id: M.nid++, item: p.id, qty, max, pat, patMax: pat, name: pick(NAMES), skin: pick(SKINS), shirt: pick(SHIRTS) });
+      renderQueue();
+    }
+    function renderQueue() {
+      const q = document.getElementById("queue"); if (!q) return;
+      q.innerHTML = M.queue.map(c => {
+        const p = P[c.item]; return `<button class="cust" data-act="serve" data-id="${c.id}" aria-label="${c.name} wants ${c.qty} ${p.name}">
+      <span class="bubble">${c.qty} × ${p.name.split(" ").pop()}</span><span class="pat"><i id="pat-${c.id}" style="width:${c.pat / c.patMax * 100}%"></i></span>
+      <svg width="62" height="70" viewBox="0 0 62 70" aria-hidden="true"><circle cx="31" cy="20" r="17" fill="${c.skin}"/><path d="M4 70Q31 28 58 70" fill="${c.shirt}"/></svg></button>`;
+      }).join("");
+    }
+    function renderShelf() {
+      const s = document.getElementById("mshelf"); if (!s) return;
+      s.innerHTML = PRODUCTS.map(p => `<div class="slot ${stock(p.id) ? "" : "out"}">${p.name.split(" ").pop()}<b class="num">${stock(p.id)}</b>${NGN(S.prices[p.id])}</div>`).join("");
+    }
+    function renderGoods() {
+      const g = document.getElementById("goods"); if (!g) return;
+      let html = "";
+      PRODUCTS.forEach((p, i) => { const n = Math.min(4, stock(p.id)); for (let k = 0; k < n; k++) { html += `<span style="position:absolute;left:calc(${12 + i * 16}% + ${k * 9}px);top:calc(${i % 2 ? 41 : 30}% );width:16px;height:18px;border-radius:4px;background:${p.color}"></span>`; } });
+      g.innerHTML = html;
+    }
+    function floatText(text, color, cid) {
+      const sc = document.getElementById("scene"); if (!sc) return;
+      const idx = M.queue.findIndex(c => c.id === cid);
+      const el = document.createElement("div"); el.className = "float"; el.textContent = text; el.style.color = color;
+      el.style.left = (8 + Math.max(0, idx) * 24) + "%"; el.style.bottom = "150px";
+      sc.appendChild(el); setTimeout(() => el.remove(), 1100);
+    }
+    function toast(msg) {
+      const t = document.getElementById("toast"); if (!t) return;
+      t.textContent = msg; t.hidden = false; clearTimeout(t._h); t._h = setTimeout(() => { t.hidden = true; }, 2200);
+    }
+    function serve(id) {
+      const c = M.queue.find(x => x.id === id); if (!c) return;
+      const p = P[c.item], price = S.prices[c.item];
+      if (stock(c.item) < c.qty) { toast("Out of " + p.name.toLowerCase() + "! " + c.name + " walked away."); removeCust(id); M.lost++; S.rep = Math.max(1, S.rep - 0.1); return; }
+      if (price <= c.max) return sell(c, price);
+      if (price <= c.max * 1.35) { openHaggle(c); return; }
+      toast(c.name + ": \"Too cost! I'll buy from Chidi.\""); removeCust(id); M.lost++; S.rep = Math.max(1, S.rep - 0.05);
+    }
+    function sell(c, unit) {
+      const amt = unit * c.qty;
+      takeStock(c.item, c.qty); S.cash += amt; M.sales += amt; M.served++;
+      if (unit <= P[c.item].sug) S.rep = Math.min(5, S.rep + 0.04);
+      floatText("+" + NGN(amt), "var(--green-ink)", c.id);
+      removeCust(c.id);
+      document.getElementById("mcash").textContent = NGN(S.cash);
+      document.getElementById("msales").textContent = "+" + NGN(M.sales);
+      renderShelf(); renderGoods();
+    }
+    function removeCust(id) { M.queue = M.queue.filter(x => x.id !== id); renderQueue(); }
+
+    // ---------- haggle ----------
+    function openHaggle(c) {
+      const ask = S.prices[c.item];
+      M.haggle = { c, ask, offer: Math.max(r50(c.max * 0.88), 50), counter: r50((ask + c.max * 0.9) / 2), patience: 3 };
+      S.stats.haggles++;
+      drawHaggle();
+    }
+    function drawHaggle(msg) {
+      const h = M.haggle, p = P[h.c.item], cost = costToday(h.c.item);
+      const ov = document.createElement("div"); ov.className = "overlay"; ov.id = "hagov";
+      const lo = Math.min(h.offer, cost) - 100, hi = h.ask;
+      ov.innerHTML = `<div class="sheet" role="dialog" aria-label="Haggle Duel">
+      <p style="font-family:var(--display);font-weight:800;font-size:26px;color:var(--purple)">HAGGLE DUEL</p>
+      <div class="row">${avatar(h.c.skin, h.c.shirt, 58)}<div style="flex:1;min-width:0"><h2 style="font-size:20px">${h.c.name} wants ${h.c.qty} ${p.name.toLowerCase()}</h2>
+        <p style="font-size:14px">${msg || `"${NGN(h.ask)} is too much! I go pay <b>${NGN(h.offer)}</b>."`} <span class="label">(price per ${p.unit})</span></p></div></div>
+      <div class="row"><span class="label" style="width:64px">Patience</span><div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${[0, 1, 2].map(i => `<span style="height:12px;border-radius:6px;background:${i < h.patience ? "var(--purple)" : "var(--line)"}"></span>`).join("")}</div></div>
+      <div class="card" style="display:flex;flex-direction:column;gap:6px">
+        <div class="row between"><label for="counter" style="font-weight:800">Your counter-offer</label><b id="cval" class="num" style="font-family:var(--display);font-size:28px;color:var(--action)">${NGN(h.counter)}</b></div>
+        <input id="counter" type="range" min="${lo}" max="${hi}" step="50" value="${h.counter}">
+        <div class="row between label num"><span>${NGN(lo)}</span><span style="color:var(--red-ink)">Cost ${NGN(cost)}</span><span>${NGN(hi)}</span></div>
+        <p id="cprof" class="num" style="font-size:13px;font-weight:800"></p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn btn-ghost" style="font-weight:800" data-hag="accept">Accept ${NGN(h.offer)}</button>
+        <button class="btn btn-primary" style="font-size:18px" data-hag="counter">Counter</button>
+      </div>
+      <button class="btn btn-ghost" data-hag="refuse">Refuse, let them go</button>
+      ${h.offer < cost ? `<p style="font-size:13px;font-weight:800;color:var(--red-ink)">Careful: their offer is below your cost price.</p>` : ""}
+    </div>`;
+      document.getElementById("hagov")?.remove();
+      app.appendChild(ov);
+      const rng = ov.querySelector("#counter");
+      const upd = () => { h.counter = +rng.value; ov.querySelector("#cval").textContent = NGN(h.counter); const m = (h.counter - cost) * h.c.qty; const el = ov.querySelector("#cprof"); el.textContent = (m >= 0 ? "Profit if they agree: +" : "Loss if they agree: ") + NGN(Math.abs(m)); el.style.color = m >= 0 ? "var(--green-ink)" : "var(--red-ink)"; };
+      rng.addEventListener("input", upd); upd();
+    }
+    function hagAction(a) {
+      const h = M.haggle; if (!h) return;
+      const close = () => { document.getElementById("hagov")?.remove(); M.haggle = null; };
+      if (a === "accept") { close(); sell(h.c, h.offer); return; }
+      if (a === "refuse") { close(); removeCust(h.c.id); M.lost++; return; }
+      if (h.counter <= h.c.max) { close(); S.wisdom += 5; sell(h.c, h.counter); toast("Deal! " + h.c.name + " agreed to " + NGN(h.counter) + ". +5 Wisdom"); return; }
+      h.patience--;
+      if (h.patience <= 0) { close(); removeCust(h.c.id); M.lost++; S.rep = Math.max(1, S.rep - 0.05); toast(h.c.name + " got tired of haggling and left."); return; }
+      h.offer = Math.min(r50(h.offer + (h.c.max - h.offer) * 0.6), h.c.max);
+      drawHaggle(`"Hmm... no. Okay, my last price is <b>${NGN(h.offer)}</b>."`);
+    }
+
+    // ---------- end of day ----------
+    function endDay() {
+      clearInterval(timer); timer = null;
+      const spoiledItems = [];
+      let spoiled = 0;
+      for (const p of PRODUCTS) { for (const b of S.inv[p.id]) b.age++; if (p.life) { const bad = S.inv[p.id].filter(b => b.age >= p.life); bad.forEach(b => { spoiled += b.qty * p.cost; spoiledItems.push(b.qty + " " + p.name.toLowerCase()); }); S.inv[p.id] = S.inv[p.id].filter(b => b.age < p.life); } }
+      S.cash -= LEVY;
+      const profit = M.sales - M.bought - LEVY;
+      S.lastDay = { sales: M.sales, bought: M.bought, levy: LEVY, spoiled, spoiledItems, profit, served: M.served, lost: M.lost };
+      S.stats.sales += M.sales; S.stats.served += M.served; S.stats.spoiled += spoiled; S.stats.best = Math.max(S.stats.best, profit);
+      S.wisdom += profit > 0 ? 10 : 0;
+      M = null;
+      go("ledger");
+    }
+    R.ledger = () => {
+      const L = S.lastDay; const up = L.profit >= 0; return `
+    <div style="background:var(--teal);color:#fff;padding:24px max(16px, env(safe-area-inset-left, 0px)) 22px;text-align:center;border-radius:0 0 28px 28px;display:flex;flex-direction:column;gap:2px">
+      <p style="font-size:13px;font-weight:700">Evening · Day ${S.day} closed</p><h1 style="font-size:26px">Today's Ledger</h1>
+      <p style="font-size:13px;font-weight:700;margin-top:6px">Cash profit</p><p class="num" style="font-family:var(--display);font-weight:800;font-size:46px;line-height:1">${up ? "+" : ""}${NGN(L.profit)}</p>
+      <p style="font-size:13px">${L.served} customers served · ${L.lost} walked away</p>
+    </div>
+    <div class="scroll">
+      <div class="card" style="padding:4px 14px"><table class="ledger"><tbody>
+        <tr><td>Sales (money in)</td><td style="color:var(--green-ink)">+${NGN(L.sales)}</td></tr>
+        <tr><td>Stock bought today</td><td style="color:var(--red-ink)">${NGN(-L.bought)}</td></tr>
+        <tr><td>Market levy</td><td style="color:var(--red-ink)">${NGN(-L.levy)}</td></tr>
+        <tr><td><b>Profit</b></td><td style="color:${up ? "var(--green-ink)" : "var(--red-ink)"}">${NGN(L.profit)}</td></tr>
+      </tbody></table></div>
+      ${L.spoiled ? `<div class="card" style="border:2px solid #F2C9C9"><p style="font-size:14px"><b>Spoiled overnight:</b> ${L.spoiledItems.join(", ")} (${NGN(L.spoiled)} wasted).</p></div>` : ""}
+      ${!up && L.bought > L.sales ? `<div class="card"><p style="font-size:14px">A negative day isn't always bad: stock you bought but didn't sell is still on your shelf for tomorrow.</p></div>` : ""}
+      <p style="font-size:13px;text-align:center;color:var(--muted)">Profit = Sales − Costs</p>
+      <button class="btn btn-primary btn-block" style="margin-top:auto" data-act="tomoney">Plan tonight's money</button>
+    </div>`;
+    };
+
+    let plan = { pay: 0, save: 0 };
+    R.money = () => {
+      const free = S.cash - plan.pay - plan.save;
+      const femi = !S.femiSeen && S.day >= 3 && S.debt > 0 && !S.loan;
+      return `
+    <div style="background:#3D2C9E;color:#fff;padding:22px max(16px, env(safe-area-inset-left, 0px)) 18px"><p style="font-size:13px;font-weight:700">Night · Day ${S.day}</p><h1 style="font-size:26px">Money Decisions</h1></div>
+    <div class="scroll" style="background:var(--cream)">
+      <div class="row between"><b>Cash in hand</b><b class="num" style="font-family:var(--display);font-size:24px;color:var(--green-ink)">${NGN(S.cash)}</b></div>
+      <div class="split" role="img" aria-label="Debt ${NGN(plan.pay)}, savings ${NGN(plan.save)}, kept ${NGN(free)}"><span style="flex:${plan.pay || 0.001};background:var(--action)"></span><span style="flex:${plan.save || 0.001};background:var(--teal)"></span><span style="flex:${Math.max(free, 0.001)};background:var(--purple)"></span></div>
+      ${moneyRow("pay", "Pay Alhaji's debt", NGN(S.debt) + " still owed", "var(--action)", plan.pay)}
+      ${moneyRow("save", "Savings jar", "2% interest every 7 days · now " + NGN(S.savings), "var(--teal)", plan.save)}
+      <div class="card row between"><div><b>Keep as cash</b><p class="label">For tomorrow's stock</p></div><b class="num" style="color:${free < 3000 ? "var(--red-ink)" : "inherit"}">${NGN(free)}</b></div>
+      ${S.savings > 0 ? `<button class="btn btn-ghost" data-act="withdraw">Take ₦1,000 out of savings</button>` : ""}
+      ${free < 3000 && (plan.pay || plan.save) ? `<p style="font-size:13px;font-weight:800;color:var(--red-ink)">Keep some cash, or you won't be able to buy stock tomorrow.</p>` : ""}
+      ${femi ? `<div class="card" style="border:2px solid var(--red);display:flex;flex-direction:column;gap:8px">
+        <span class="tag" style="background:var(--red);color:#fff;align-self:flex-start">SURPRISE OFFER</span>
+        <div class="row">${avatar("#8A5A34", "#E5383B", 44)}<h2 style="font-size:18px">"Fast Money" Femi</h2></div>
+        <p style="font-size:14px">"Take ₦20,000 now, clear your debt fast! Just pay me back <b>₦26,000</b> in 5 days."</p>
+        <p style="font-size:12px;font-weight:800;color:var(--red-ink)">That's 30% interest in under a week.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn btn-green" style="font-size:15px" data-act="femi" data-v="no">No, thank you</button><button class="btn btn-ghost" style="font-weight:800" data-act="femi" data-v="yes">Take the loan</button></div>
+      </div>` : ""}
+      <button class="btn btn-primary btn-block" style="margin-top:auto" data-act="sleep" ${femi ? "disabled" : ""}>${femi ? "Answer Femi first" : "Sleep → Day " + (S.day + 1)}</button>
+    </div>`;
+    };
+    const moneyRow = (k, title, sub, color, val) => `<div class="card row"><span aria-hidden="true" style="width:14px;height:14px;border-radius:4px;background:${color};flex-shrink:0"></span><div style="flex:1;min-width:0"><b>${title}</b><p class="label">${sub}</p></div>
+    <div class="stepper"><button aria-label="Less to ${title}" data-act="plan" data-k="${k}" data-v="-1000">−</button><span class="num" style="min-width:64px">${NGN(val)}</span><button class="plus" aria-label="More to ${title}" data-act="plan" data-k="${k}" data-v="1000">+</button></div></div>`;
+
+    function sleep() {
+      S.debt -= plan.pay; S.savings += plan.save; S.cash -= plan.pay + plan.save; plan = { pay: 0, save: 0 };
+      if (S.debt <= 0) { S.debt = 0; save(); return go("win"); }
+      S.day++;
+      const notes = [];
+      if (S.day % 7 === 1 && S.savings > 0) { const i = Math.round(S.savings * 0.02); S.savings += i; notes.push("Your savings earned " + NGN(i) + " interest!"); }
+      if (S.loan && S.day >= S.loan.due) {
+        let owe = S.loan.owe; const fromCash = Math.min(Math.max(S.cash, 0), owe); S.cash -= fromCash; owe -= fromCash;
+        const fromSav = Math.min(S.savings, owe); S.savings -= fromSav; owe -= fromSav;
+        if (owe > 0) { S.debt += owe; S.rep = Math.max(1, S.rep - 1); notes.push("Femi took " + NGN(S.loan.owe - owe) + " and added " + NGN(owe) + " to your debt. Ouch."); }
+        else notes.push("Femi collected " + NGN(S.loan.owe) + ". That loan cost you ₦6,000.");
+        S.loan = null;
+      }
+      const cheapest = Math.min(...PRODUCTS.map(p => p.cost));
+      const anyStock = PRODUCTS.some(p => stock(p.id) > 0);
+      if (S.cash < cheapest && !anyStock && S.savings < cheapest) { S.cash += 3000; S.debt += 3000; notes.push("You ran out of money. Mama lent you ₦3,000 (added to the debt). Buy carefully!"); }
+      const r = Math.random();
+      S.event = null;
+      if (S.day > 1) {
+        if (r < 0.18) S.event = { type: "rain", text: "Heavy rain today. Fewer customers will come out.", color: "var(--teal)" };
+        else if (r < 0.34) S.event = { type: "rush", text: "Festive rush! Lots of customers today.", color: "var(--pink)" };
+        else if (r < 0.48) { const it = pick(PRODUCTS); S.event = { type: "hike", item: it.id, text: it.name + " cost is up 20% at the warehouse today.", color: "var(--red)" }; }
+      }
+      S.notes = notes;
+      save();
+      if (S.day > 2 && (S.day - 1) % 2 === 0) { quiz = { i: 0, score: 0, picked: null, qs: [0, 1, 2].map(k => QUIZ[(S.quizIdx + k) % QUIZ.length]) }; S.quizIdx += 3; return go("quiz"); }
+      go("home");
+    }
+
+    let quiz = null;
+    R.quiz = () => {
+      const q = quiz.qs[quiz.i]; const done = quiz.picked !== null; return `
+    <div class="scroll" style="gap:16px">
+      <div class="row"><div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:6px">${quiz.qs.map((_, k) => `<span style="height:10px;border-radius:5px;background:${k <= quiz.i ? "var(--purple)" : "var(--line)"}"></span>`).join("")}</div><b>${quiz.i + 1}/3</b></div>
+      <p style="font-size:13px;font-weight:800;color:var(--purple-deep);letter-spacing:.5px">MARKET WISDOM QUIZ</p>
+      <h1 style="font-size:24px">${q.q}</h1>
+      <div style="display:flex;flex-direction:column;gap:10px">${q.a.map((a, k) => `<button class="choice ${done && k === q.c ? "right" : ""} ${done && k === quiz.picked && k !== q.c ? "wrong" : ""}" data-act="answer" data-v="${k}" ${done ? "disabled" : ""}><span class="k">${"ABCD"[k]}</span>${a}</button>`).join("")}</div>
+      ${done ? `<div class="card" style="background:${quiz.picked === q.c ? "var(--green-ink)" : "var(--red-ink)"};color:#fff"><p style="font-family:var(--display);font-weight:800;font-size:20px">${quiz.picked === q.c ? "Correct! +20 Wisdom" : "Not quite"}</p><p style="font-size:14px;line-height:1.45">${q.why}</p></div>
+      <button class="btn btn-primary btn-block" data-act="nextq">${quiz.i < 2 ? "Next question" : "Finish quiz"}</button>` : ""}
+    </div>`;
+    };
+
+    R.win = () => `
+    <div class="scroll" style="text-align:center;align-items:center;background:var(--yellow);gap:16px;padding-top:40px">
+      <p style="font-weight:800;letter-spacing:1px">CHAPTER 1 COMPLETE</p>
+      <h1 style="font-size:40px;color:var(--purple-deep)">Debt cleared!</h1>
+      <p style="font-size:16px;max-width:30ch">You paid off Mama Ronke's ${NGN(START_DEBT)} debt in ${S.day} days. Mama is proud of you, ${esc(S.name)}.</p>
+      <div class="card" style="width:100%;text-align:left"><table class="ledger"><tbody>
+        <tr><td>Total sales</td><td>${NGN(S.stats.sales)}</td></tr><tr><td>Customers served</td><td>${S.stats.served}</td></tr>
+        <tr><td>Best day profit</td><td>${NGN(S.stats.best)}</td></tr><tr><td>Haggles</td><td>${S.stats.haggles}</td></tr>
+        <tr><td>Goods spoiled</td><td>${NGN(S.stats.spoiled)}</td></tr><tr><td>Savings</td><td>${NGN(S.savings)}</td></tr><tr><td>Wisdom</td><td>${S.wisdom}</td></tr>
+      </tbody></table></div>
+      <p style="font-size:14px">${S.day <= DEADLINE ? "You beat the 30-day rent deadline!" : "You went past the 30 days, but you never gave up."}</p>
+      <button class="btn btn-primary btn-block" data-act="newgame">Play again</button>
+    </div>`;
+
+    R.menu = () => `
+    <div class="scroll"><h1 style="font-size:28px">Menu</h1>
+      <div class="card"><h2 style="font-size:18px">How to play</h2><ol style="margin:8px 0 0;padding-left:20px;line-height:1.55;font-size:14px">
+        <li>Buy stock in the morning within your cash.</li><li>Set prices: too high and customers haggle or leave.</li><li>Tap customers to serve them before their patience runs out.</li><li>Check the Ledger, then split your money between the debt, savings and tomorrow's cash.</li><li>Clear the ₦50,000 debt to win Chapter 1.</li></ol></div>
+      <button class="btn btn-ghost btn-block" data-act="home">Back to the stall</button>
+      <button class="btn btn-ghost btn-block" data-act="title">Title screen</button>
+      <div class="card" style="display:flex;flex-direction:column;gap:8px"><p style="font-size:14px">Start over from Day 1? Your current progress will be lost.</p><button class="btn btn-ghost" style="border-color:var(--red);color:var(--red-ink);font-weight:800" data-act="newgame">Yes, start a new game</button></div>
+    </div>`;
+
+    R.pause = () => "";
+    const stars = r => { const n = Math.round(r); return "★".repeat(n) + "☆".repeat(5 - n); };
+    function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+    function go(screen) {
+      S.screen = screen;
+      if (screen !== "market") save();
+      app.innerHTML = R[screen]();
+      app.scrollTop = 0;
+      if (screen === "home" && S.notes && S.notes.length) { const n = S.notes; S.notes = []; const box = document.createElement("div"); box.className = "overlay"; box.innerHTML = `<div class="sheet"><h2 style="font-size:22px">Good morning, Day ${S.day}</h2>${n.map(t => `<p style="font-size:15px">${t}</p>`).join("")}<button class="btn btn-primary" data-close>Okay</button></div>`; box.querySelector("[data-close]").onclick = () => box.remove(); app.appendChild(box); }
+    }
+
+    // ---------- events ----------
+    app.addEventListener("click", e => {
+      const h = e.target.closest("[data-hag]"); if (h) return hagAction(h.dataset.hag);
+      const b = e.target.closest("[data-act]"); if (!b || b.disabled) return;
+      const a = b.dataset.act, v = b.dataset.v, id = b.dataset.id;
+      if (a === "look") { S.look = +v; const nm = document.getElementById("pname"); if (nm) S.name = nm.value || "Tobi"; go("title"); }
+      else if (a === "start") { const nm = document.getElementById("pname"); if (nm) S.name = (nm.value || "Tobi").trim().slice(0, 14) || "Tobi"; if (!S.lastDay) S.lastDay = null; go("home"); }
+      else if (a === "newgame") { const keep = { name: S.name, look: S.look }; S = Object.assign(fresh(), keep); go("home"); }
+      else if (a === "home" || a === "menu" || a === "title") go(a);
+      else if (a === "tobuy") { cart = {}; S._bought = 0; go("buy"); }
+      else if (a === "buymore") { cart = {}; go("buy"); }
+      else if (a === "cart") { cart[id] = Math.max(0, (cart[id] || 0) + +v); const tot = PRODUCTS.reduce((t, p) => t + (cart[p.id] || 0) * costToday(p.id), 0); if (tot > S.cash) cart[id]--; go("buy"); }
+      else if (a === "buydone") { let total = 0; for (const p of PRODUCTS) { const q = cart[p.id] || 0; if (q) { S.inv[p.id].push({ qty: q, age: 0 }); total += q * costToday(p.id); } } S.cash -= total; S._bought = (S._bought || 0) + total; cart = {}; go("price"); }
+      else if (a === "open") { go("market"); startMarket(); M.bought = S._bought || 0; }
+      else if (a === "serve") serve(+id);
+      else if (a === "pause") { if (!M) return; M.paused = true; const ov = document.createElement("div"); ov.className = "overlay"; ov.innerHTML = `<div class="sheet"><h2 style="font-size:24px">Paused</h2><p>The market waits for you.</p><button class="btn btn-primary" data-resume>Resume</button><button class="btn btn-ghost" data-endnow>End the day now</button></div>`; ov.querySelector("[data-resume]").onclick = () => { ov.remove(); M.paused = false; }; ov.querySelector("[data-endnow]").onclick = () => { ov.remove(); M.paused = false; M.t = DAY_SECONDS; }; app.appendChild(ov); }
+      else if (a === "tomoney") { plan = { pay: 0, save: 0 }; go("money"); }
+      else if (a === "plan") { const k = b.dataset.k, d = +v; const free = S.cash - plan.pay - plan.save; let nv = plan[k] + d; if (d > 0 && free < d) nv = plan[k] + Math.max(0, Math.floor(free)); if (k === "pay") nv = Math.min(nv, S.debt); plan[k] = Math.max(0, nv); go("money"); }
+      else if (a === "withdraw") { const t = Math.min(1000, S.savings); S.savings -= t; S.cash += t; go("money"); }
+      else if (a === "femi") { S.femiSeen = true; if (v === "yes") { S.cash += 20000; S.loan = { owe: 26000, due: S.day + 5 }; } else S.wisdom += 20; go("money"); }
+      else if (a === "sleep") sleep();
+      else if (a === "answer") { quiz.picked = +v; if (+v === quiz.qs[quiz.i].c) { S.wisdom += 20; quiz.score++; } go("quiz"); }
+      else if (a === "nextq") { if (quiz.i < 2) { quiz.i++; quiz.picked = null; go("quiz"); } else { quiz = null; go("home"); } }
+    });
+    app.addEventListener("input", e => {
+      const t = e.target; if (t.dataset && t.dataset.act === "price") {
+        S.prices[t.dataset.id] = +t.value; const card = t.closest(".card"); const p = P[t.dataset.id], c = costToday(p.id), m = +t.value - c;
+        card.querySelector("b.num").textContent = NGN(+t.value);
+        const info = card.querySelector("p.num"); info.innerHTML = `Cost ${NGN(c)} · <span style="color:${m > 0 ? "var(--green-ink)" : "var(--red-ink)"}">${m >= 0 ? "Profit" : "Loss"} ${NGN(Math.abs(m))} each</span> · Market price ~${NGN(p.sug)}`;
+      }
+    });
+    document.addEventListener("visibilitychange", () => { if (document.hidden && M && !M.haggle && !M.paused) { const pb = app.querySelector('[data-act="pause"]'); if (pb) pb.click(); } });
+
+    go(["title", "home", "buy", "price", "ledger", "money", "quiz", "win", "menu"].includes(S.screen) && !(S.screen === "quiz" && !quiz) && !(S.screen === "ledger" && !S.lastDay) ? (S.screen === "buy" || S.screen === "price" ? "home" : S.screen) : "title");
+  })();
+</script>
